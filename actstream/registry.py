@@ -96,8 +96,7 @@ class ActionableModelRegistry(dict):
                 del self[model_class]
 
     def check(self, model_class_or_object):
-        if getattr(model_class_or_object, '_deferred', None):
-            model_class_or_object = model_class_or_object._meta.proxy_for_model
+        model_class_or_object = model_class_or_object._meta.concrete_model  # idempotent
         if not isclass(model_class_or_object):
             model_class_or_object = model_class_or_object.__class__
         model_class = validate(model_class_or_object, RuntimeError)
